@@ -18,3 +18,64 @@
 // </div>
 //
 // Use your function to create a card for each of the articles and add the card to the DOM.
+let dataAll = [];
+axios
+    .get('https://lambda-times-backend.herokuapp.com/articles')
+    .then((res) => {
+        res.data.articles.bootstrap.forEach(e => {
+            dataAll.push(e);
+        });
+        res.data.articles.javascript.forEach(e => {
+            dataAll.push(e);
+        });
+        res.data.articles.jquery.forEach(e => {
+            dataAll.push(e);
+        });
+        res.data.articles.node.forEach(e => {
+            dataAll.push(e);
+        });
+        res.data.articles.technology.forEach(e => {
+            dataAll.push(e);
+        });
+        
+    })
+    .catch((er) => {
+        console.log(er,'error on cards');
+    });
+
+
+    function artCreate(obj){
+      
+        const card = document.createElement('div');
+        card.classList.add('card');
+        const headLine = document.createElement('div');
+        headLine.classList.add('headline');
+        const auth = document.createElement('div');
+        auth.classList.add('author');
+        const imgCont = document.createElement('div');
+        imgCont.classList.add('img-container');
+        const img1 = document.createElement('img');
+        const byAuth = document.createElement('span');
+
+        headLine.textContent = obj.headline;
+        img1.src = obj.authorPhoto;
+        byAuth.textContent = obj.authorName;
+
+
+        const carCont = document.querySelector('.cards-container');
+
+        carCont.appendChild(card);
+        card.appendChild(headLine);
+        card.appendChild(auth);
+        auth.appendChild(imgCont);
+        imgCont.appendChild(img1);
+        card.appendChild(byAuth);
+
+        return card;
+      
+    };
+
+    dataAll.forEach(e => {
+    let bo = artCreate(e);
+    return bo;
+    });
