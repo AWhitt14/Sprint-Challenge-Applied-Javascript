@@ -20,28 +20,13 @@
 // Use your function to create a card for each of the articles and add the card to the DOM.
 let dataAll = [];
 axios
-    .get('https://lambda-times-backend.herokuapp.com/articles')
-    .then((res) => {
-        res.data.articles.bootstrap.forEach(e => {
-            dataAll.push(e);
-        });
-        res.data.articles.javascript.forEach(e => {
-            dataAll.push(e);
-        });
-        res.data.articles.jquery.forEach(e => {
-            dataAll.push(e);
-        });
-        res.data.articles.node.forEach(e => {
-            dataAll.push(e);
-        });
-        res.data.articles.technology.forEach(e => {
-            dataAll.push(e);
-        });
-        
-    })
-    .catch((er) => {
-        console.log(er,'error on cards');
-    });
+.get('https://lambda-times-backend.herokuapp.com/articles')
+.then(res => {
+    place(res.data.articles);    
+})
+.catch((er) => {
+    console.log(er,'error on cards');
+});
 
 
     function artCreate(obj){
@@ -62,9 +47,7 @@ axios
         byAuth.textContent = obj.authorName;
 
 
-        const carCont = document.querySelector('.cards-container');
-
-        carCont.appendChild(card);
+        
         card.appendChild(headLine);
         card.appendChild(auth);
         auth.appendChild(imgCont);
@@ -72,10 +55,17 @@ axios
         card.appendChild(byAuth);
 
         return card;
-      
     };
-
-    dataAll.forEach(e => {
-    let bo = artCreate(e);
-    return bo;
+function place(obj){
+    const carCont = document.querySelector('.cards-container');
+    Object.values(obj).forEach(dataAll => {
+        dataAll.forEach(e => {
+            carCont.appendChild(artCreate(e));
+        });
     });
+}
+    
+
+
+
+
